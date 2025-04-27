@@ -4,6 +4,7 @@ import HomeStyles from '../styles/HomeStyles';
 import SearchBar from '../components/SearchBar';
 import GenrePicker from '../components/GenrePicker';
 import BookList from '../components/BookList';
+import Sidebar from '../components/SideBar';
 
 const books = [
   {
@@ -108,6 +109,7 @@ const books = [
     },
 ];
 
+
 const genres = ['Todos', 'Realismo Mágico', 'Clásico', 'Ficción', 'Terror'];
 
 const HomeScreen = () => {
@@ -115,7 +117,7 @@ const HomeScreen = () => {
   const [selectedGenre, setSelectedGenre] = useState('Todos');
   const [filteredBooks, setFilteredBooks] = useState(books);
 
-  const handleAuthorSearch = (query) => {
+  const handleAuthorSearch = (query: string) => {
     setSearchAuthor(query);
     const filtered = books.filter(
       (book) =>
@@ -125,7 +127,7 @@ const HomeScreen = () => {
     setFilteredBooks(filtered);
   };
 
-  const handleGenreChange = (genre) => {
+  const handleGenreChange = (genre: string) => {
     setSelectedGenre(genre);
     const filtered = books.filter(
       (book) =>
@@ -137,7 +139,13 @@ const HomeScreen = () => {
 
   return (
     <View style={HomeStyles.container}>
-      <Text style={HomeStyles.title}>Librería Virtual</Text>
+      {/* Barra superior con Sidebar y título */}
+      <View style={HomeStyles.header}>
+        <Sidebar /> {/* Sidebar en la esquina superior izquierda */}
+        <Text style={HomeStyles.title}>LYXA</Text> {/* Título en la esquina superior derecha */}
+      </View>
+
+      {/* Búsqueda y listado de libros */}
       <SearchBar
         value={searchAuthor}
         onChangeText={handleAuthorSearch}
