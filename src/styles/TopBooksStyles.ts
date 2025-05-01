@@ -1,40 +1,79 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-const TopBooksStyles = StyleSheet.create({
+export default StyleSheet.create({
+  // Header con Sidebar y título LYXA
+  headerContainer: {
+
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+    paddingHorizontal: 16,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#2B2D42',
+  },
+
+  // Contenedor principal
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#ffffff', // Fondo blanco para destacar los libros
+    backgroundColor: '#f2f4f8',
+    paddingHorizontal: 16,
+    paddingTop: 0, // el espacio superior lo aporta headerContainer
   },
+
+  // Título de sección
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#2b2d42',
-    marginBottom: 10,
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#2B2D42',
+    marginBottom: 16,
     textAlign: 'center',
   },
-  book: {
+
+  // FlatList content container
+  list: {
+    paddingBottom: 24,
+  },
+
+  // Card de cada libro
+  bookCard: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-    padding: 10,
-    backgroundColor: '#f7f7fc',
-    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: 'hidden',
+    // Sombra iOS
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    // Elevación Android
     elevation: 3,
   },
+
+  // Wrapper de la imagen (para placeholder)
+  bookImageWrapper: {
+    width: 80,
+    height: 120,
+    backgroundColor: '#e1e5ee',
+  },
   bookImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 5,
-    marginRight: 15,
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+
+  // Información de texto al lado
+  bookInfo: {
+    flex: 1,
+    padding: 12,
+    justifyContent: 'center',
   },
   bookName: {
-    fontSize: 16,
-    color: '#2b2d42',
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2B2D42',
   },
 });
-
-export default TopBooksStyles;

@@ -1,11 +1,12 @@
+// src/styles/SidebarStyles.ts
 import { StyleSheet } from 'react-native';
 
 const SidebarStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 1,
-    left: 1, // Ubicación en la esquina superior izquierda
-    zIndex: 25, // Asegura que el sidebar esté siempre visible
+    top: 1,       // ← lo subimos desde 1 a 60 px
+    left: 1,      // opcionalmente ajusta también el margen horizontal
+    zIndex: 25,
   },
   hamburgerButton: {
     width: 40,
@@ -22,17 +23,17 @@ const SidebarStyles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   menu: {
-    marginTop: 1,
-    backgroundColor: 'rgba(46, 46, 78, 0.85)', // Fondo translúcido
+    marginTop: 10, // ↑ un pequeño gap entre el botón y el menú
+    backgroundColor: 'rgba(46, 46, 78, 0.85)',
     borderRadius: 10,
     width: 250,
     overflow: 'hidden',
-    elevation: 10, // Sombra para profundidad
+    elevation: 10,
   },
   profileImage: {
     width: 70,
     height: 70,
-    borderRadius: 35, // Imagen circular
+    borderRadius: 35,
     alignSelf: 'center',
     marginVertical: 10,
     borderWidth: 2,

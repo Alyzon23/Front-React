@@ -1,24 +1,77 @@
+// src/styles/UserInfoStyles.ts
 import { StyleSheet } from 'react-native';
 
-const UserInfoStyles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#E0E5EC',
     paddingHorizontal: 20,
-    backgroundColor: '#f7f7fc',
-    justifyContent: 'center',
+    paddingTop: 20,
+  },
+  headerContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#2B2D42',
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: '#2B2D42',
   },
   title: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#2b2d42',
-    marginBottom: 20,
+    fontWeight: '700',
+    color: '#2B2D42',
     textAlign: 'center',
+    marginBottom: 12,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#888888',
+    marginTop: 12,
   },
   text: {
     fontSize: 16,
-    color: '#5f5f76',
-    marginVertical: 8,
+    color: '#333333',
+    marginTop: 4,
+  },
+  input: {
+    backgroundColor: '#F0F0F5',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginTop: 4,
+  },
+  button: {
+    marginTop: 24,
+    backgroundColor: '#2B2D42',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
-
-export default UserInfoStyles;
