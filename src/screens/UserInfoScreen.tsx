@@ -12,6 +12,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from '../api/axiosConfig';
 import SideBar from '../components/SideBar';
 import styles from '../styles/UserInfoStyles';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '../components/Navigation'; // Ajusta ruta si hace falta
+
+type NavProp = NativeStackNavigationProp<RootStackParamList>;
 
 interface Usuario {
   username: string;
@@ -22,6 +27,7 @@ interface Usuario {
 }
 
 const UserInfoScreen: React.FC = () => {
+  const navigation = useNavigation<NavProp>();
   const [user, setUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
@@ -39,11 +45,11 @@ const UserInfoScreen: React.FC = () => {
           Alert.alert('Error', 'No se encontró el nombre de usuario.');
           return setLoading(false);
         }
-        const { data } = await axios.get<Usuario>(`/api/auth1/usuario/${username}`);
+        const { data } = await axios.get<Usuario>(`/api/auth/usuarios/${username}`);
         setUser(data);
         setForm({ nombre: data.nombre, apellidos: data.apellidos, email: data.email });
-      } catch (e) {
-        console.error(e);
+      } catch (e: any) {
+        console.error('Error al cargar usuario:', e.response || e);
         Alert.alert('Error', 'No se pudieron cargar los datos.');
       } finally {
         setLoading(false);
@@ -56,17 +62,21 @@ const UserInfoScreen: React.FC = () => {
     if (!user) return;
     try {
       setLoading(true);
-      await axios.put<Usuario>(`/api/auth1/usuario/${user.username}`, {
-        nombre: form.nombre,
-        apellidos: form.apellidos,
-        email: form.email,
-      });
+      const response = await axios.put<Usuario>(
+        `/api/auth/usuarios/${user.username}`,
+        {
+          nombre: form.nombre,
+          apellidos: form.apellidos,
+          email: form.email,
+        }
+      );
       Alert.alert('Éxito', 'Perfil actualizado con éxito.');
       setUser({ ...user, ...form });
       setEditMode(false);
     } catch (e: any) {
-      console.error(e);
-      Alert.alert('Error', 'No se pudo actualizar el perfil.');
+      console.error('Error en handleSave:', e.response || e);
+      const msg = e.response?.data || e.message || 'No se pudo actualizar el perfil.';
+      Alert.alert('Error', msg);
     } finally {
       setLoading(false);
     }
@@ -101,26 +111,40 @@ const UserInfoScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header: Sidebar + LYXA */}
+      {/* Header: Sidebar, Inicio y LYXA */}
       <View style={styles.headerContainer}>
         <SideBar />
+        <TouchableOpacity
+          style={styles.homeButton}
+          onPress={() => navigation.navigate('Home')}
+        >
+          <Text style={styles.homeButtonText}>Inicio</Text>
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>LYXA</Text>
       </View>
 
       {/* Card con avatar y datos */}
       <View style={styles.card}>
         <Image
-          source={{ uri: user.image ?? 'https://cdn-icons-png.flaticon.com/512/6073/6073873.png' }}
+          source={{
+            uri:
+              user.image ??
+              'https://cdn-icons-png.flaticon.com/512/6073/6073873.png',
+          }}
           style={styles.avatar}
         />
-        <Text style={styles.title}>{user.nombre} {user.apellidos}</Text>
+        <Text style={styles.title}>
+          {user.nombre} {user.apellidos}
+        </Text>
 
         <Text style={styles.label}>Nombre</Text>
         {editMode ? (
           <TextInput
             style={styles.input}
             value={form.nombre}
-            onChangeText={text => setForm(f => ({ ...f, nombre: text }))}
+            onChangeText={text =>
+              setForm(f => ({ ...f, nombre: text }))
+            }
           />
         ) : (
           <Text style={styles.text}>{user.nombre}</Text>
@@ -131,7 +155,9 @@ const UserInfoScreen: React.FC = () => {
           <TextInput
             style={styles.input}
             value={form.apellidos}
-            onChangeText={text => setForm(f => ({ ...f, apellidos: text }))}
+            onChangeText={text =>
+              setForm(f => ({ ...f, apellidos: text }))
+            }
           />
         ) : (
           <Text style={styles.text}>{user.apellidos}</Text>
@@ -143,7 +169,9 @@ const UserInfoScreen: React.FC = () => {
             style={styles.input}
             keyboardType="email-address"
             value={form.email}
-            onChangeText={text => setForm(f => ({ ...f, email: text }))}
+            onChangeText={text =>
+              setForm(f => ({ ...f, email: text }))
+            }
           />
         ) : (
           <Text style={styles.text}>{user.email}</Text>
@@ -152,10 +180,15 @@ const UserInfoScreen: React.FC = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={editMode ? handleSave : handleEditPress}
+          disabled={loading}
         >
-          <Text style={styles.buttonText}>
-            {editMode ? 'Guardar Cambios' : 'Editar Perfil'}
-          </Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>
+              {editMode ? 'Guardar Cambios' : 'Editar Perfil'}
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

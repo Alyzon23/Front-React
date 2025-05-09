@@ -1,69 +1,66 @@
+// src/screens/AdminRegisterScreen.tsx
+
 import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RegisterStyles from '../styles/RegisterStyles';
-import axios from 'axios';
+import apiClient from '../api/axiosConfig';
 import { API_ENDPOINTS } from '../api/config';
 
-const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [apellidos, setApellidos] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+const AdminRegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+  const [username, setUsername]       = useState('');
+  const [email, setEmail]             = useState('');
+  const [nombre, setNombre]           = useState('');
+  const [apellidos, setApellidos]     = useState('');
+  const [password, setPassword]       = useState('');
+  const [confirmPassword, setConfirm] = useState('');
+  const [showPwd, setShowPwd]         = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading]         = useState(false);
 
-  const handleRegister = async () => {
-    // Validar que no estén vacíos
+  const handleAdminRegister = async () => {
     if (!username || !email || !nombre || !apellidos || !password || !confirmPassword) {
       return Alert.alert('Error', 'Todos los campos son obligatorios');
     }
-    // Verificar contraseñas
     if (password !== confirmPassword) {
       return Alert.alert('Error', 'Las contraseñas no coinciden');
     }
 
+    setLoading(true);
     try {
-      const payload = {
+      await apiClient.post(API_ENDPOINTS.REGISTER_ADMIN, {
         username,
         email,
         nombre,
         apellidos,
-        password,
-        // En este punto no solicitamos admin:
-        requestAdmin: false,
-        role: 'ROLE_USER'
-      };
-      const response = await axios.post(API_ENDPOINTS.REGISTER, payload);
+        password
+      });
 
-      if (response.status >= 200 && response.status < 300) {
-        Alert.alert(
-          '¡Registro exitoso!',
-          'Tu cuenta ha sido creada. Ahora puedes iniciar sesión.',
-          [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
-        );
-      } else {
-        Alert.alert('Error', `Código inesperado: ${response.status}`);
-      }
-    } catch (error: any) {
-      const msg = error.response?.data || 'No se pudo conectar con el servidor';
+      Alert.alert(
+        '¡Solicitud enviada!',
+        'Revisa tu correo (jmr.dicao@yavirac.edu.ec) para obtener el código.',
+        [{ text: 'OK', onPress: () => navigation.navigate('ValidateAdmin', { username }) }]
+      );
+    } catch (e: any) {
+      const msg = e.response?.data || 'No se pudo solicitar el permiso';
       Alert.alert('Error', msg);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={RegisterStyles.container}>
-      <Text style={RegisterStyles.title}>Regístrate</Text>
+      <Text style={RegisterStyles.title}>Registro Administrador</Text>
 
-      {/* Username */}
+      {/* Usuario */}
       <View style={RegisterStyles.inputContainer}>
         <TextInput
           style={RegisterStyles.input}
@@ -114,14 +111,14 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           style={RegisterStyles.input}
           placeholder="Contraseña"
           placeholderTextColor="#aaa"
-          secureTextEntry={!showPassword}
+          secureTextEntry={!showPwd}
           value={password}
           onChangeText={setPassword}
         />
         {password.length > 0 && (
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <TouchableOpacity onPress={() => setShowPwd(!showPwd)}>
             <Icon
-              name={showPassword ? 'eye-off' : 'eye'}
+              name={showPwd ? 'eye-off' : 'eye'}
               size={24}
               style={RegisterStyles.eyeIcon}
             />
@@ -129,7 +126,7 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         )}
       </View>
 
-      {/* Repetir contraseña */}
+      {/* Confirmar contraseña */}
       <View style={RegisterStyles.inputContainer}>
         <TextInput
           style={RegisterStyles.input}
@@ -137,7 +134,7 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           placeholderTextColor="#aaa"
           secureTextEntry={!showConfirm}
           value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          onChangeText={setConfirm}
         />
         {confirmPassword.length > 0 && (
           <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
@@ -150,26 +147,19 @@ const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         )}
       </View>
 
-      {/* Botón Crear cuenta */}
+      {/* Botón */}
       <TouchableOpacity
         style={RegisterStyles.registerButton}
-        onPress={handleRegister}
+        onPress={handleAdminRegister}
+        disabled={loading}
       >
-        <Text style={RegisterStyles.buttonText}>Crear Cuenta</Text>
+        {loading
+          ? <ActivityIndicator color="#fff" />
+          : <Text style={RegisterStyles.buttonText}>Solicitar Permiso</Text>
+        }
       </TouchableOpacity>
-
-      {/* Enlace a login */}
-      <Text style={RegisterStyles.haveAccountText}>
-        ¿Ya tienes cuenta?{' '}
-        <Text
-          style={RegisterStyles.highlightText}
-          onPress={() => navigation.navigate('Login')}
-        >
-          Iniciar sesión
-        </Text>
-      </Text>
     </View>
   );
 };
 
-export default RegisterScreen;
+export default AdminRegisterScreen;

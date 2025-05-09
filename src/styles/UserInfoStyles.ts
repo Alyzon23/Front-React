@@ -9,14 +9,31 @@ export default StyleSheet.create({
     paddingTop: 20,
   },
   headerContainer: {
-    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
+    // espacio horizontal permite alinear bien
+  },
+  // Botón hamburguesa + LYXA + Inicio
+  homeButton: {
+    marginLeft: 'auto',           // empuja a la derecha
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    backgroundColor: 'transparent', // sin color de fondo
+    zIndex: 1010,                 // encima del resto
+  },
+  homeButtonText: {
+    color: '#1B9C85',
+    fontSize: 20,
+    fontWeight: '600',
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
     color: '#2B2D42',
+    marginLeft: 199,   // separa del botón Inicio
+    zIndex: 1000,
   },
   card: {
     backgroundColor: '#FFFFFF',

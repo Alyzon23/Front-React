@@ -19,6 +19,34 @@ const HomeStyles = StyleSheet.create({
     textAlign: 'right', // Alinea el texto a la derecha
     flex: 1, // Ocupa el espacio restante
   },
+  adminPanel: {
+    padding: 16,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  adminTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#d32f2f'
+  },
+  adminButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  adminButton: {
+    flex: 1,
+    marginHorizontal: 4,
+    paddingVertical: 10,
+    backgroundColor: '#d32f2f',
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  adminButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
 });
 
 export default HomeStyles;

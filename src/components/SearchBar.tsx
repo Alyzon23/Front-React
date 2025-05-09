@@ -31,7 +31,7 @@ const SideBar: React.FC = () => {
         const username = await AsyncStorage.getItem('username');
         if (!username) return;
 
-        const response = await apiClient.get(`/api/auth1/usuario/${username}`);
+        const response = await apiClient.get(`/api/auth/usuarios/${username}`);
         setUser({
           name: response.data.name ?? response.data.username ?? username,
           image:

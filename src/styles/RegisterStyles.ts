@@ -1,78 +1,65 @@
 import { StyleSheet } from 'react-native';
 
-const RegisterStyles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e3f2fd', // Fondo claro y agradable para la pantalla de registro
-    padding: 20,
+    backgroundColor: '#f0f4f8',
+    padding: 24,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1e88e5', // Color primario azul
-    marginBottom: 20, // Espaciado más amplio para mayor claridad
+    fontSize: 34,
+    fontWeight: '700',
+    color: '#1976d2',
+    marginBottom: 30,
   },
-  input: {
-    width: '100%', // Asegura que los campos llenen todo el ancho disponible
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#bbdefb', // Bordes azul claro
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingHorizontal: 10, // Espaciado interno del texto
-    fontSize: 16,
-    color: '#1e88e5', // Texto azul
-    backgroundColor: '#ffffff', // Fondo blanco limpio para los inputs
-  },
-  registerButton: {
-    backgroundColor: '#1e88e5', // Botón azul primario
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 20,
-    shadowColor: '#000', // Efecto de sombra para mayor visibilidad
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 4, // Sombra en Android
-  },
-  googleButton: {
-    backgroundColor: '#db4437', // Color rojo para el botón de Google
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: '#ffffff', // Texto blanco para buen contraste
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  haveAccountText: {
-    fontSize: 16,
-    color: '#90caf9', // Azul claro para el texto complementario
-    marginTop: 10,
-  },
-  highlightText: {
-    color: '#1e88e5', // Azul primario para resaltar palabras
-    fontWeight: 'bold',
-  },
-  dividerContainer: {
+  inputContainer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
   },
-  divider: {
+  input: {
     flex: 1,
-    height: 1,
-    backgroundColor: '#bbdefb', // Color de las líneas divisorias
+    height: 50,
+    borderBottomWidth: 2,
+    borderBottomColor: '#90caf9',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    color: '#1e88e5',
+    backgroundColor: 'transparent',
   },
-  dividerText: {
-    marginHorizontal: 10,
-    color: '#90caf9', // Azul claro para el texto del divisor
+  eyeIcon: {
+    marginLeft: 12,
+    color: '#1e88e5',
+  },
+  registerButton: {
+    width: '100%',
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderRadius: 12,
+    backgroundColor: '#1976d2',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    marginBottom: 32,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  haveAccountText: {
+    fontSize: 14,
+    color: '#424242',
+    textAlign: 'center',
+  },
+  highlightText: {
+    color: '#1976d2',
+    fontWeight: '700',
   },
 });
-
-export default RegisterStyles;

@@ -1,10 +1,13 @@
+// src/screens/SideBar.tsx
+
 import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
-  Animated
+  Animated,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from '../api/axiosConfig';
@@ -30,7 +33,7 @@ const SideBar: React.FC = () => {
         const username = await AsyncStorage.getItem('username');
         if (!username) return;
 
-        const { data } = await apiClient.get(`/api/auth1/usuario/${username}`);
+        const { data } = await apiClient.get(`/api/auth/usuarios/${username}`);
         setUser({
           name:  data.name ?? data.username ?? username,
           image: data.image ?? 'https://cdn-icons-png.flaticon.com/512/6073/6073873.png',
@@ -49,6 +52,24 @@ const SideBar: React.FC = () => {
       useNativeDriver: false,
     }).start();
     setIsExpanded(prev => !prev);
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      'Cerrar Sesión',
+      '¿Estás seguro que deseas cerrar sesión?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Cerrar Sesión',
+          style: 'destructive',
+          onPress: async () => {
+            await AsyncStorage.removeItem('token');
+            navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -74,7 +95,7 @@ const SideBar: React.FC = () => {
           {user.name || 'Usuario'}
         </Text>
 
-        {/* Nuevo enlace a Home */}
+        {/* Enlaces de navegación */}
         <TouchableOpacity
           style={SidebarStyles.link}
           onPress={() => navigation.navigate('Home')}
@@ -82,7 +103,6 @@ const SideBar: React.FC = () => {
           <Text style={SidebarStyles.linkText}>Home</Text>
         </TouchableOpacity>
 
-        {/* Opciones de navegación existentes */}
         <TouchableOpacity
           style={SidebarStyles.link}
           onPress={() =>
@@ -91,30 +111,18 @@ const SideBar: React.FC = () => {
             })
           }
         >
-          <Text style={SidebarStyles.linkText}>Usuario</Text>
+          <Text style={SidebarStyles.linkText}>Perfil</Text>
         </TouchableOpacity>
 
+
+        {/* Cerrar sesión */}
         <TouchableOpacity
-          style={SidebarStyles.link}
-          onPress={() => navigation.navigate('TopBooks')}
+          style={[SidebarStyles.link, SidebarStyles.logoutLink]}
+          onPress={handleLogout}
         >
-          <Text style={SidebarStyles.linkText}>
-            Top 10 Libros Más Leídos
+          <Text style={[SidebarStyles.linkText, SidebarStyles.logoutText]}>
+            Cerrar Sesión
           </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={SidebarStyles.link}
-          onPress={() => navigation.navigate('Support')}
-        >
-          <Text style={SidebarStyles.linkText}>Soporte</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={SidebarStyles.link}
-          onPress={() => navigation.navigate('Reviews')}
-        >
-          <Text style={SidebarStyles.linkText}>Reseñas</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>
